@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants, type Easing } from "framer-motion";
 import { ServiceDetail } from "@/types";
 
 const serviceDetails: ServiceDetail[] = [
@@ -79,9 +79,9 @@ export default function Services() {
   const [activeService, setActiveService] = useState<ServiceDetail | null>(null);
   const [bookingStatus, setBookingStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  const textVariant = {
+  const textVariant: Variants = {
     hidden: { opacity: 0, y: 15 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as Easing } }
   };
 
   async function handleBookingSubmit(e: React.FormEvent<HTMLFormElement>) {

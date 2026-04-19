@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from 'react';
-import { motion, useMotionValue, animate, useInView, useSpring } from 'framer-motion';
+import { motion, useMotionValue, animate, useInView, useSpring, type Variants, type Easing } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { Sphere, MeshDistortMaterial, Float, Environment } from '@react-three/drei';
 
@@ -37,18 +37,18 @@ function CountUp({ target, duration = 2, suffix = "" }: { target: number, durati
 }
 
 export default function Hero() {
-  const infinityFloat = {
+  const infinityFloat: Variants = {
     animate: {
       y: [0, -12, 0],
-      transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+      transition: { duration: 5, repeat: Infinity, ease: "easeInOut" as Easing }
     }
   };
 
-  const pulseGlow = {
+  const pulseGlow: Variants = {
     animate: {
       opacity: [0.7, 1, 0.7],
       scale: [1, 1.02, 1],
-      transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+      transition: { duration: 4, repeat: Infinity, ease: "easeInOut" as Easing }
     }
   };
 

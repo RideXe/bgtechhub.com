@@ -35,7 +35,7 @@ export default function About() {
   // Animation Variants
   const textReveal: Variants = {
     hidden: { y: 40, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
+    visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } }
   };
 
   const cardVariant: Variants = {

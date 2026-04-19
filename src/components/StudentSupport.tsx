@@ -105,7 +105,7 @@ export default function StudentSection() {
                   <div className={`relative w-full h-full rounded-2xl ${feature.bg} border border-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-300`}>
                     {/* The Icon Fix: Using direct text color instead of bg-clip-text */}
                     <div className={`${feature.iconColor}`}>
-                      {cloneElement(feature.icon as React.ReactElement, {
+                      {cloneElement(feature.icon as React.ReactElement<{ className?: string }>, {
                         className: `w-6 h-6 stroke-[2.5px]`,
                       })}
                     </div>

@@ -99,7 +99,7 @@ export default function StudentSection() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-50 rounded-full blur-[120px] opacity-60" />
       </div>
 
-      <div className="relative mx-auto max-w-5xl px-6">
+      <div className="relative max-w-6xl mx-auto px-6 sm:px-10 lg:px-12">
 
         {/* CENTERED HEADER */}
         <motion.div
@@ -132,7 +132,7 @@ export default function StudentSection() {
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
               whileHover={{ y: -8 }}
-              className="group cursor-pointer relative p-10 rounded-[2.5rem] bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-2xl hover:shadow-emerald-500/10 transition-all overflow-hidden"
+              className="group cursor-pointer relative p-8 md:p-10 rounded-[2.5rem] bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-2xl hover:shadow-emerald-500/10 transition-all overflow-hidden"
             >
               <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity">
                 {cloneElement(feature.icon as React.ReactElement<any>, { size: 120 })}

@@ -1,24 +1,103 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from 'react';
-import { motion, useMotionValue, animate, useInView, useSpring, Variants } from 'framer-motion';
-import { Canvas } from '@react-three/fiber';
-import { Sphere, MeshDistortMaterial, Float } from '@react-three/drei';
+import { motion, useMotionValue, animate, useInView, useSpring } from 'framer-motion';
 import { Star, ArrowRight } from "lucide-react";
 import { useRouter } from 'next/navigation';
 
-// --- Supporting Components ---
-function AnimatedShape() {
-  return (
-    <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-      <Sphere args={[1, 120, 200]} scale={2.4}>
-        <MeshDistortMaterial color="#00C752" attach="material" distort={0.5} speed={3} roughness={0.2} metalness={0.1} />
-      </Sphere>
-    </Float>
-  );
-}
+// --- Rose Orbit Animation Component ---
+const RoseOrbit = () => {
+  const containerRef = useRef<SVGGElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
+  const particlesRef = useRef<SVGCircleElement[]>([]);
 
-function CountUp({ target, duration = 2, suffix = "" }: { target: number, duration?: number, suffix?: string }) {
+  const config = {
+    particleCount: 72,
+    trailSpan: 0.42,
+    durationMs: 5200,
+    rotationDurationMs: 28000,
+    pulseDurationMs: 4600,
+    orbitRadius: 7,
+    detailAmplitude: 2.7,
+    petalCount: 7,
+    curveScale: 3.9,
+  };
+
+  useEffect(() => {
+    let animationFrame: number;
+    const startedAt = performance.now();
+
+    const getPoint = (progress: number, detailScale: number) => {
+      const t = progress * Math.PI * 2;
+      const k = config.petalCount;
+      const r = config.orbitRadius - config.detailAmplitude * detailScale * Math.cos(k * t);
+      return {
+        x: 50 + Math.cos(t) * r * config.curveScale,
+        y: 50 + Math.sin(t) * r * config.curveScale,
+      };
+    };
+
+    const render = (now: number) => {
+      const time = now - startedAt;
+      const progress = (time % config.durationMs) / config.durationMs;
+      const detailScale = 0.52 + ((Math.sin(((time % config.pulseDurationMs) / config.pulseDurationMs) * Math.PI * 2 + 0.55) + 1) / 2) * 0.48;
+      const rotation = -((time % config.rotationDurationMs) / config.rotationDurationMs) * 360;
+
+      if (containerRef.current) containerRef.current.setAttribute('transform', `rotate(${rotation} 50 50)`);
+
+      const steps = 120;
+      let d = "";
+      for (let i = 0; i <= steps; i++) {
+        const p = getPoint(i / steps, detailScale);
+        d += `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(2)} ${p.y.toFixed(2)} `;
+      }
+      if (pathRef.current) pathRef.current.setAttribute('d', d);
+
+      particlesRef.current.forEach((node, index) => {
+        const tailOffset = index / (config.particleCount - 1);
+        const pProgress = ((progress - tailOffset * config.trailSpan % 1) + 1) % 1;
+        const point = getPoint(pProgress, detailScale);
+        const fade = Math.pow(1 - tailOffset, 0.56);
+
+        node.setAttribute('cx', point.x.toFixed(2));
+        node.setAttribute('cy', point.y.toFixed(2));
+        node.setAttribute('r', (0.9 + fade * 2.7).toFixed(2));
+        node.setAttribute('opacity', (0.04 + fade * 0.96).toFixed(3));
+      });
+
+      animationFrame = requestAnimationFrame(render);
+    };
+
+    animationFrame = requestAnimationFrame(render);
+    return () => cancelAnimationFrame(animationFrame);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none opacity-30">
+      <svg viewBox="0 0 100 100" className="w-[85vmin] h-[85vmin] overflow-visible text-[#00C752]">
+        <g ref={containerRef}>
+          <path ref={pathRef} fill="none" stroke="currentColor" strokeWidth="0.4" strokeLinecap="round" opacity="0.1" />
+          {Array.from({ length: config.particleCount }).map((_, i) => (
+            <circle key={i} ref={(el) => { if (el) particlesRef.current[i] = el; }} fill="currentColor" />
+          ))}
+        </g>
+      </svg>
+    </div>
+  );
+};
+
+// --- Animations for staggered text ---
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.215, 0.61, 0.355, 1] as const } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+};
+
+function CountUp({ target, suffix = "" }: { target: number, suffix?: string }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const motionValue = useMotionValue(0);
@@ -26,8 +105,8 @@ function CountUp({ target, duration = 2, suffix = "" }: { target: number, durati
   const [display, setDisplay] = useState("0");
 
   useEffect(() => {
-    if (isInView) animate(motionValue, target, { duration: duration, ease: "circOut" });
-  }, [isInView, target, motionValue, duration]);
+    if (isInView) animate(motionValue, target, { duration: 2, ease: "circOut" });
+  }, [isInView, target, motionValue]);
 
   useEffect(() => springValue.on("change", (latest) => setDisplay(Math.floor(latest).toLocaleString())), [springValue]);
 
@@ -37,75 +116,52 @@ function CountUp({ target, duration = 2, suffix = "" }: { target: number, durati
 export default function Hero() {
   const router = useRouter();
 
-  // FIX: This function handles the transition to the new page
-  const handleBooking = (e: React.MouseEvent) => {
-    e.preventDefault();
-    router.push('/work/booking');
-  };
-
-  const infinityFloat: Variants = {
-    animate: { y: [0, -12, 0], transition: { duration: 5, repeat: Infinity, ease: "easeInOut" } }
-  };
-
-  const pulseGlow: Variants = {
-    animate: { opacity: [0.7, 1, 0.7], scale: [1, 1.02, 1], transition: { duration: 4, repeat: Infinity, ease: "easeInOut" } }
-  };
-
   return (
-    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-slate-950 text-white pt-28 pb-16">
+    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-white text-slate-900 pt-28 pb-16">
 
-      {/* Background Layers */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <video autoPlay loop muted playsInline className="absolute w-full h-full object-cover opacity-60 scale-105">
-          <source src="/assets/images/bg.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-transparent to-slate-950/80 z-10" />
-      </div>
+      <RoseOrbit />
 
-      <div className="absolute inset-0 z-[5] pointer-events-none opacity-20">
-        <Canvas camera={{ position: [0, 0, 5] }}>
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} intensity={1} />
-          <AnimatedShape />
-        </Canvas>
-      </div>
-
-      <div className="relative z-20 max-w-5xl px-6 flex flex-col items-center text-center">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+        className="relative z-20 max-w-6xl mx-auto px-6 sm:px-10 lg:px-12 flex flex-col items-center text-center"
+      >
         {/* Availability Badge */}
         <motion.button
-          onClick={handleBooking}
-          variants={pulseGlow}
-          animate="animate"
+          variants={fadeInUp}
+          onClick={() => router.push('/work/booking')}
           whileHover={{ scale: 1.05 }}
-          className="flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl mb-6 shadow-2xl group cursor-pointer"
+          className="flex items-center gap-3 px-4 py-2 rounded-full border border-slate-200 bg-white/80 backdrop-blur-md shadow-sm mb-6 group cursor-pointer"
         >
-          <Star size={14} className="text-[#00C752] fill-[#00C752] animate-pulse" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-300">Only 2 open slots available!</span>
-          <div className="ml-1 p-1 rounded-full bg-white/10 group-hover:bg-[#00C752] transition-colors">
-            <ArrowRight size={10} className="text-white" />
+          <Star size={14} className="text-[#00C752] fill-[#00C752]" />
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600">Only 2 open slots available!</span>
+          <div className="ml-1 p-1 rounded-full bg-slate-100 group-hover:bg-[#00C752] transition-colors">
+            <ArrowRight size={10} className="text-slate-400 group-hover:text-white" />
           </div>
         </motion.button>
 
-        <motion.h1 variants={infinityFloat} animate="animate" className="text-5xl md:text-8xl font-black tracking-tight mb-6 leading-[1.1] text-white">
-          Building <span className="bg-gradient-to-r from-[#00C752] to-cyan-400 bg-clip-text text-transparent block py-1">Ideas</span>
-          <span className="italic font-serif font-light text-slate-400 text-4xl md:text-6xl block mt-2">Into Reality</span>
+        <motion.h1 variants={fadeInUp} className="text-6xl md:text-8xl font-black tracking-tight mb-6 leading-[1.1]">
+          Building <span className="bg-gradient-to-r from-[#00C752] to-cyan-500 bg-clip-text text-transparent inline-block">Ideas</span>
+          <br />
+          <span className="italic font-serif font-light text-slate-400 text-4xl md:text-7xl">Into Reality</span>
         </motion.h1>
 
-        <p className="max-w-xl text-base md:text-lg text-slate-300 font-medium mb-10">
-          We design, develop, and launch apps, websites, and AI solutions for startups and businesses.
-        </p>
+        <motion.p variants={fadeInUp} className="max-w-xl text-base md:text-lg text-slate-500 font-medium mb-10">
+          Transforming concepts into high-performance digital solutions, intuitive web platforms, and AI-powered systems.
+        </motion.p>
 
-        {/* Main Action Area */}
-        <div className="flex items-center justify-center w-full mb-16">
+        {/* Action Button */}
+        <motion.div variants={fadeInUp} className="flex items-center justify-center w-full mb-20">
           <motion.button
-            onClick={handleBooking}
+            onClick={() => router.push('/work/booking')}
             whileHover="hover"
             initial="initial"
             whileTap={{ scale: 0.98 }}
-            className="group flex items-center gap-4 pl-2 pr-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all cursor-pointer shadow-2xl"
+            className="group flex items-center gap-4 pl-2 pr-6 py-2 rounded-full border border-slate-200 bg-white hover:bg-slate-50 transition-all cursor-pointer shadow-lg shadow-slate-200/50"
           >
             <div className="flex items-center">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white text-slate-950 z-10">
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-900 text-white z-10">
                 <span className="font-black text-xs tracking-tighter">BG</span>
               </div>
               <motion.div
@@ -113,47 +169,41 @@ export default function Hero() {
                   initial: { width: 0, opacity: 0, x: -10 },
                   hover: { width: "auto", opacity: 1, x: 0 }
                 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 className="overflow-hidden flex items-center whitespace-nowrap"
               >
-                <span className="text-white font-black text-xs mx-2 opacity-50">+</span>
-                <div className="bg-[#00C752] text-white h-10 w-10 px-4 rounded-full flex items-center justify-center border border-white/10">
+                <span className="text-slate-300 font-black text-xs mx-2">+</span>
+                <div className="bg-[#00C752] text-white h-10 w-10 px-4 rounded-full flex items-center justify-center">
                   <span className="font-black text-[8px] uppercase tracking-[0.2em]">You</span>
                 </div>
               </motion.div>
             </div>
-
             <div className="flex items-center gap-3">
-              <span className="text-slate-300 group-hover:text-white font-black uppercase text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors">
+              <span className="text-slate-600 group-hover:text-slate-900 font-black uppercase text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors">
                 Book a 30 min call
               </span>
-              <div className="p-2 rounded-full bg-white/5 group-hover:bg-[#00C752] transition-all border border-white/5 group-hover:border-transparent">
-                <ArrowRight size={12} className="text-white group-hover:text-slate-950 transition-colors" />
+              <div className="p-2 rounded-full bg-slate-50 group-hover:bg-[#00C752] transition-all border border-slate-100 group-hover:border-transparent">
+                <ArrowRight size={12} className="text-slate-400 group-hover:text-white transition-colors" />
               </div>
             </div>
           </motion.button>
-        </div>
+        </motion.div>
 
         {/* Stats Grid */}
-        <motion.div
-          animate={{ boxShadow: ["0px 0px 0px rgba(0,199,82,0)", "0px 10px 40px rgba(0,199,82,0.2)", "0px 0px 0px rgba(0,199,82,0)"] }}
-          transition={{ duration: 4, repeat: Infinity }}
-          className="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-3 border border-white/10 bg-white/5 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden shadow-2xl"
-        >
+        <motion.div variants={fadeInUp} className="w-full grid grid-cols-1 sm:grid-cols-3 border border-slate-200 bg-white/70 backdrop-blur-xl rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200/60">
           {[
             { label: "Projects Delivered", val: 50, suf: "+" },
             { label: "Own Products", val: 2, suf: "+" },
             { label: "Client Satisfaction", val: 100, suf: "%" }
           ].map((stat, i) => (
-            <div key={i} className={`flex flex-col items-center p-10 ${i !== 2 ? 'border-b sm:border-b-0 sm:border-r border-white/10' : ''}`}>
-              <span className="text-5xl font-black text-white mb-2">
+            <div key={i} className={`flex flex-col items-center p-10 ${i !== 2 ? 'border-b sm:border-b-0 sm:border-r border-slate-100' : ''}`}>
+              <span className="text-5xl font-black text-slate-900 mb-2">
                 <CountUp target={stat.val} suffix={stat.suf} />
               </span>
               <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00C752]">{stat.label}</span>
             </div>
           ))}
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }

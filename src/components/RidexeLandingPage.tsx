@@ -16,7 +16,7 @@ const RidexeLandingPage = () => {
     return (
         <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-blue-100">
             {/* Navigation */}
-            <nav className="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
+            <nav className="flex items-center justify-between py-6 max-w-6xl mx-auto px-6 sm:px-10 lg:px-12">
                 <div className="flex items-center gap-2 group cursor-pointer">
                     <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center transition-transform group-hover:rotate-12">
                         <span className="text-white font-bold text-2xl">R</span>
@@ -41,7 +41,7 @@ const RidexeLandingPage = () => {
             </nav>
 
             {/* Hero Section */}
-            <main className="max-w-7xl mx-auto px-8 pt-12 md:pt-20 pb-20">
+            <main className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-12 pt-12 md:pt-20 pb-20">
                 <div className="flex flex-col lg:flex-row gap-16 items-center">
 
                     {/* Left Content */}

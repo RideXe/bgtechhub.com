@@ -97,7 +97,7 @@ export default function Portfolio() {
     <section id="portfolio" className="relative py-24 bg-slate-50 overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(34,197,94,0.08)_0%,transparent_50%)] pointer-events-none" />
 
-      <div className="mx-auto max-w-5xl px-6 relative z-10">
+      <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-12 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
           <motion.div {...fadeInUp}>
@@ -119,7 +119,7 @@ export default function Portfolio() {
           initial="initial"
           whileInView="whileInView"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
           {projects.map((project, idx) => (
             <motion.div
@@ -129,7 +129,7 @@ export default function Portfolio() {
                 whileInView: { opacity: 1, y: 0, transition: { delay: idx * 0.1 } }
               }}
               whileHover={{ y: -8 }}
-              className="group relative flex flex-col bg-white border border-slate-200 rounded-[2.5rem] p-8 transition-all duration-500 hover:border-green-500/30 hover:shadow-2xl hover:shadow-green-500/10"
+              className="group relative flex flex-col bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-10 transition-all duration-500 hover:border-green-500/30 hover:shadow-2xl hover:shadow-green-500/10"
             >
               <div className="flex items-start justify-between mb-8">
                 <motion.div

@@ -26,7 +26,7 @@ export default function Products() {
       {/* Background Decor */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-12">
         {/* CENTERED HEADING */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -55,7 +55,7 @@ export default function Products() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -12 }}
-                className="group relative p-12 rounded-[3.5rem] bg-slate-50 border border-slate-100 cursor-pointer overflow-hidden transition-all duration-500 hover:bg-white hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] hover:border-emerald-500/20"
+                className="group relative p-8 md:p-10 rounded-[2.5rem] bg-slate-50 border border-slate-100 cursor-pointer overflow-hidden transition-all duration-500 hover:bg-white hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] hover:border-emerald-500/20"
               >
                 <div className="relative z-10 text-center">
                   <div className="w-32 h-32 mx-auto mb-8 bg-white rounded-3xl p-4 shadow-sm border border-slate-50 group-hover:scale-110 transition-transform duration-500">
@@ -67,10 +67,6 @@ export default function Products() {
                   </div>
                 </div>
 
-                {/* Decorative background number */}
-                <div className="absolute -bottom-6 -right-6 text-slate-200/20 text-9xl font-black italic pointer-events-none group-hover:text-emerald-500/5 transition-colors">
-                  0{index + 1}
-                </div>
               </motion.div>
             </Link>
           ))}

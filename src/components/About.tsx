@@ -83,7 +83,7 @@ export default function About() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-5xl px-6">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10 lg:px-12">
         <div className="flex flex-col items-center gap-y-16">
 
           {/* HEADING SECTION */}
@@ -118,7 +118,7 @@ export default function About() {
                 variants={cardVariant}
                 onClick={() => setSelectedId(pillar.id)}
                 whileHover={{ y: -8, scale: 1.02 }}
-                className="group cursor-pointer relative p-8 rounded-2xl bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300"
+                className="group cursor-pointer relative p-8 md:p-10 rounded-[2.5rem] bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300"
               >
                 <div className="flex flex-col items-center text-center">
                   <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-lg group-hover:bg-emerald-500 transition-all duration-300">

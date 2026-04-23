@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Types
 interface ServiceDetail {
   id: string;
   icon: React.ReactNode;

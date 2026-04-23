@@ -121,7 +121,7 @@ const FeatureCard = ({ item, onClick }: { item: WhyDetail; onClick: () => void }
     whileTap={{ scale: 0.98 }}
     onClick={onClick}
     // Added group/card here for specific icon child referencing
-    className="group/card relative flex flex-col items-start text-left p-8 rounded-[2.5rem] bg-white border border-slate-200 shadow-sm transition-all duration-300 overflow-hidden w-full h-full cursor-pointer hover:border-emerald-400 hover:shadow-2xl"
+    className="group/card relative flex flex-col items-start text-left p-8 md:p-10 rounded-[2.5rem] bg-white border border-slate-200 shadow-sm transition-all duration-300 overflow-hidden w-full h-full cursor-pointer hover:border-emerald-400 hover:shadow-2xl"
   >
     {/* <div className="absolute top-4 right-8 text-7xl font-black text-emerald-600 italic pointer-events-none group-hover/card:text-emerald-500/5 transition-colors">
       {item.num}
@@ -158,7 +158,7 @@ export default function WhyUs() {
     <section id="why" className="relative py-24 bg-[#f8fafc] overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="relative mx-auto max-w-5xl px-6">
+      <div className="relative max-w-6xl mx-auto px-6 sm:px-10 lg:px-12">
         <div className="max-w-2xl mx-auto text-center mb-16">
           <motion.span
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
@@ -174,7 +174,7 @@ export default function WhyUs() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {whyDetails.map((item) => (
             <FeatureCard key={item.id} item={item} onClick={() => setActiveWhy(item)} />
           ))}

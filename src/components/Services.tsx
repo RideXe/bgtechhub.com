@@ -99,7 +99,7 @@ export default function Services() {
 
   return (
     <section id="services" className="relative py-20 overflow-hidden bg-[#f8fafc]">
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-12">
 
         {/* Header Section */}
         <motion.div
@@ -128,7 +128,7 @@ export default function Services() {
           whileInView="visible"
           viewport={{ once: true }}
           transition={{ staggerChildren: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
           {serviceDetails.map((svc) => (
             <motion.div
@@ -141,7 +141,7 @@ export default function Services() {
                 setActiveService(svc);
                 document.body.style.overflow = "hidden";
               }}
-              className="group relative p-8 rounded-[2rem] bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 cursor-pointer overflow-hidden"
+              className="group relative p-8 md:p-10 rounded-[2.5rem] bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 cursor-pointer overflow-hidden"
             >
               {/* Icon Container with Pop Effect */}
               <motion.div

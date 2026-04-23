@@ -58,11 +58,11 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-500 ${isScrolled
-        ? "py-3 bg-white/70 backdrop-blur-xl border-b border-black/[0.05]"
+        ? "py-3 bg-white/70 backdrop-blur-xl"
         : "py-4 bg-transparent"
         }`}
     >
-      <div className="max-w-5xl mx-auto px-6 flex justify-between items-center">
+      <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-12 flex justify-between items-center">
         {/* Logo - Wrapped in Link to return home */}
         <div className="flex-1 flex justify-start items-center gap-3">
           <Link href="/">

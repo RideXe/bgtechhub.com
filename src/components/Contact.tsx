@@ -45,7 +45,7 @@ export default function Contact() {
       {/* Background Radial Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-500/[0.06] blur-[150px] rounded-full pointer-events-none" />
 
-      <div className="mx-auto max-w-5xl px-6 relative z-10">
+      <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-start">
 
           {/* Left Column: Context & Info */}

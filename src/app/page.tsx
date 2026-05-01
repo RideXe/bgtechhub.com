@@ -25,9 +25,9 @@ export default function Home() {
         <About />
         <Services />
         <Products />
+        <StudentSupport />
 
         <WhyUs />
-        <StudentSupport />
         <Testimonials />
         <Contact />
       </main>

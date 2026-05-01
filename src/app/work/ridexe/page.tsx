@@ -37,6 +37,7 @@ import Footer from '@/components/Footer';
 import { useRouter } from 'next/navigation';
 
 import SocialFlipButton from "@/components/ui/social-flip-button";
+import Navbar from '@/components/Navbar';
 
 const RidexeLandingPage = () => {
 
@@ -59,63 +60,7 @@ const RidexeLandingPage = () => {
     return (
         <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-emerald-100">
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
-                <div className="flex items-center justify-between px-6 py-3 max-w-7xl mx-auto">
-
-                    <div className="flex-1 flex justify-start items-center">
-                        <Link href="/">
-                            <img src="/assets/images/logo.png" alt="Logo" className="h-8 md:h-9 w-auto cursor-pointer" />
-                        </Link>
-                    </div>
-
-
-                    {/* Desktop Navigation Links */}
-                    <div className="hidden md:flex items-center bg-gray-50/50 rounded-full px-6 py-2 border border-gray-100 gap-6">
-                        {['About', 'Services', 'Our Work', 'Academy', 'Contact'].map((item) => (
-                            <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} className="text-sm font-semibold text-gray-600 hover:text-emerald-600 transition-colors">
-                                {item}
-                            </a>
-                        ))}
-                    </div>
-
-                    {/* Action Button - Reduced padding/text size */}
-                    <div className="flex items-center gap-4">
-                        <button
-                            onClick={handleBookingClick}
-                            className="group relative bg-[#0f0f0f] text-white px-5 py-2.5 rounded-full hidden sm:flex items-center gap-3 transition-all duration-500 hover:shadow-[0_10px_20px_-5px_rgba(0,199,82,0.3)] hover:-translate-y-0.5 active:scale-95"
-                        >
-                            <span className="font-bold text-[10px] uppercase tracking-[0.15em] relative z-10">
-                                Book a call
-                            </span>
-                            <span className="relative z-10 bg-white/5 border border-white/10 rounded-full p-1.5 group-hover:bg-[#00C752] transition-all duration-500">
-                                <ArrowUpRight size={14} className="group-hover:rotate-45 transition-transform" />
-                            </span>
-                        </button>
-
-                        {/* Mobile Menu Toggle */}
-                        <button
-                            className="md:hidden p-2 text-gray-600"
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        >
-                            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                        </button>
-                    </div>
-                </div>
-
-                {/* Mobile Dropdown Menu */}
-                {isMenuOpen && (
-                    <div className="md:hidden bg-white border-b border-gray-100 px-6 py-4 flex flex-col gap-4 animate-in slide-in-from-top duration-300">
-                        {['About', 'Services', 'Our Work', 'Academy', 'Contact'].map((item) => (
-                            <a key={item} href="#" className="text-sm font-bold text-gray-700 hover:text-emerald-600">
-                                {item}
-                            </a>
-                        ))}
-                        <button className="bg-emerald-600 text-white py-3 rounded-xl font-bold text-xs uppercase">
-                            Book a call
-                        </button>
-                    </div>
-                )}
-            </nav>
+            <Navbar />
 
             {/* Hero Section */}
             <main className="max-w-7xl mx-auto px-8 pt-12 md:pt-20 pb-20">
@@ -146,7 +91,7 @@ const RidexeLandingPage = () => {
                         <div className="space-y-6">
                             <p className="text-3xl md:text-4xl font-bold leading-[1.05] tracking-tight text-slate-900">
                                 One App.<br />
-                                <span className="text-emerald-600 italic">Every Ride.</span><br />
+                                <span className="text-green-600 italic">Every Ride.</span><br />
                                 Every Journey.
                             </p>
                             <p className="text-lg md:text-xl text-gray-500 leading-relaxed max-w-lg">
@@ -359,7 +304,7 @@ const RidexeLandingPage = () => {
 
                                     <div className="h-[1px] w-full bg-gray-100 mb-6" />
                                     <ul className="space-y-4 text-[18px] font-semibold text-slate-900">
-                                        {['Web Development', 'Landing Page', 'UI/UX'].map((service) => (
+                                        {['UI/UX', 'Logo Designing', 'Web Development', 'App Development',].map((service) => (
                                             <li key={service} className="hover:text-[#00C752] transition-colors cursor-default">
                                                 {service}
                                             </li>

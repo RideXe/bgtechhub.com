@@ -7,6 +7,7 @@ import Services from "@/components/Services";
 import Products from "@/components/Products";
 import WhyUs from "@/components/WhyUs";
 import StudentSupport from "@/components/StudentSupport";
+import BlogPreview from "@/components/BlogPreview";
 // import Portfolio from "@/components/Portfolio";
 import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
@@ -26,6 +27,7 @@ export default function Home() {
         <Services />
         <Products />
         <StudentSupport />
+        <BlogPreview />
 
         <WhyUs />
         <Testimonials />

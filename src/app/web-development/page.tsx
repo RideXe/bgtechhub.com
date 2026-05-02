@@ -1,25 +1,18 @@
-import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { motion } from 'framer-motion';
-import { 
-  ArrowRight, 
-  Code2, 
-  Layout, 
-  Zap, 
-  ShieldCheck, 
-  Search, 
-  Smartphone, 
-  Cpu, 
+import {
+  ArrowRight,
+  Layout,
+  Zap,
+  Search,
+  Smartphone,
+  Cpu,
   Globe,
   Rocket,
   CheckCircle2,
   Sparkles
 } from 'lucide-react';
 import Link from 'next/link';
-
-// Using a Client Component wrapper for animations
-import ClientOnlyAnimations from '@/components/ClientOnlyAnimations';
 
 export const metadata = {
   title: "Custom Website Development Services in Bengaluru | BG THUB",
